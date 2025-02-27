@@ -14,7 +14,7 @@ torch.manual_seed(1234)
 
 # ✅ Force CPU-only training
 device = torch.device("cpu")
-torch.set_default_tensor_type("torch.FloatTensor")
+torch.set_default_dtype(torch.float32)
 
 def synchronize():
     """Synchronize when using distributed training (disabled for CPU-only mode)."""
@@ -57,7 +57,9 @@ def train(args):
     # ✅ Load dataset (football images)
     g = torch.Generator()
     g.manual_seed(args.loader_seed)
+    print("📂 Loading dataset...")  # Debugging print
     dataset, data_sampler = get_training_dataset(args, max_interval=args.start_interval)
+    print("✅ Dataset Loaded!")  # Debugging print
 
     data_loader = torch.utils.data.DataLoader(
         dataset,
@@ -71,7 +73,9 @@ def train(args):
     )
 
     # ✅ Initialize OmniMotion Trainer
-    trainer = BaseTrainer(args).to(device)
+    print("🚀 Initializing Trainer...")
+    trainer = BaseTrainer(args)
+    print("✅ Trainer Ready!")
 
     start_step = trainer.step + 1
     step = start_step
@@ -93,10 +97,15 @@ def train(args):
 
 if __name__ == "__main__":
     args = config_parser()
-
+    
+	
+    args.batch_size = 4  # Ensure batch size is set
+    args.learning_rate = 0.0001  # Ensure learning rate is set
+    print(f"🔹 Loaded Config: num_pairs={args.num_pairs}, lr_feature={args.lr_feature}, lr_deform={args.lr_deform}, lr_color={args.lr_color}")
+  
     # ✅ Ensure dataset path is set to your football dataset
     args.data_dir = "/Users/nadiajelani/Documents/GitHub/omni/dataset"
-    args.save_dir = "/Users/nadiajelani/Documents/GitHub/omni/omnimotion/outputs"
+    args.save_dir = "/Users/nadiajelani/Documents/GitHub/omni/outputs"
     args.expname = "football_experiment"
     args.num_iters = 50000  # Adjust training iterations
     args.num_pairs = 4  # Reduce batch size for stability
