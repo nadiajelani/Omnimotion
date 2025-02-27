@@ -1,0 +1,17 @@
+expname = football_experiment
+data_dir = /Users/nadiajelani/Documents/GitHub/omni/dataset
+save_dir = /Users/nadiajelani/Documents/GitHub/omni/outputs
+num_iters = 50000
+num_pairs = 4
+num_pts = 256
+use_max_loc = True
+vis_occlusion = True
+use_affine = False
+batch_size = 4
+learning_rate = 0.0001
+
+num_pairs = 4  # This is the correct batch size parameter (already in train.py)
+lr_feature = 0.0001
+lr_deform = 0.0001
+lr_color = 0.0001
+
